@@ -42,7 +42,7 @@ class Order extends MY_Controller
         $station_level = $info['user_object']['user_level'];
         $station_id = $info['user_object']['user_statiton'];
         $data['section'] = "Vaccines";
-        $data['subtitle'] = "Request Stock";
+        $data['subtitle'] = "Request Vaccines";
         $data['page_title'] = "Manage Stock";
         $data['module'] = "order";
         $data['view_file'] = "create_request";
@@ -51,7 +51,7 @@ class Order extends MY_Controller
         //breadcrumbs
         $this->load->library('make_bread');
         $this->make_bread->add('Manage Stock', '', 0);
-        $this->make_bread->add('Request Stocks', 'order/list_orders', 0);
+        $this->make_bread->add('Request Vaccines', 'order/list_orders', 0);
         $this->make_bread->add('Create Request', '', 0);
 
         $data['breadcrumb'] = $this->make_bread->output();
@@ -99,8 +99,8 @@ class Order extends MY_Controller
 
         $data['submitted_orders'] = $this->mdl_order->get_submitted_orders($station, $level);
         $data['section'] = "Manage Stock";
-        $data['subtitle'] = "Request Stocks";
-        $data['page_title'] = "Request Stocks";
+        $data['subtitle'] = "Request Vaccines";
+        $data['page_title'] = "Request Vaccines";
         $data['module'] = "order";
         if ($level == '1') {
             $data['view_file'] = "adm_list_order_view";
@@ -112,7 +112,7 @@ class Order extends MY_Controller
         //breadcrumbs
         $this->load->library('make_bread');
         $this->make_bread->add('Manage Stock', '', 0);
-        $this->make_bread->add('Request Stocks', '', 0);
+        $this->make_bread->add('Request Vaccines', '', 0);
 
         $data['breadcrumb'] = $this->make_bread->output();
         //
@@ -140,7 +140,7 @@ class Order extends MY_Controller
         //breadcrumbs
         $this->load->library('make_bread');
         $this->make_bread->add('Manage Stock', '', 0);
-        $this->make_bread->add('Request Stocks', 'order/list_orders', 0);
+        $this->make_bread->add('Request Vaccines', 'order/list_orders', 0);
         $this->make_bread->add('View Request', '', 0);
 
         $data['breadcrumb'] = $this->make_bread->output();
@@ -238,7 +238,7 @@ class Order extends MY_Controller
             $request_array[$request_counter]['current_quantity'] = $item['current'];
             $request_array[$request_counter]['max_quantity'] = $item['max_stock'];
             $request_array[$request_counter]['min_quantity'] = $item['min_stock'];
-            $request_array[$request_counter]['expiry_date'] = $item['expiry'];
+          
           
             $request_array[$request_counter]['request_id'] = $request_id[$request_counter];
 

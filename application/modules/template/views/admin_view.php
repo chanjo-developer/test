@@ -126,7 +126,7 @@
                                     <a href="<?php echo site_url('stock/adjust_stock'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Stock Adjustment</b> </a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('stock/list_inventory'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Stock Ledgers</b> </a>
+                                    <a href="<?php echo site_url('stock/list_inventory'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Vaccine Ledgers</b> </a>
                                 </li>
                                 <li>
                                     <a href="<?php echo site_url('stock/list_receive_stock'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Receive Stocks</b> </a>
@@ -135,7 +135,7 @@
                                     <a href="<?php echo site_url('stock/list_issue_stock'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Issue Stocks</b> </a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('order/list_orders'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Stock Requests</b> </a>
+                                    <a href="<?php echo site_url('order/list_orders'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Vaccine Requests</b> </a>
                                 </li>
                                 <li>
                                     <a href="<?php echo site_url('reports/stock_allocation'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Stock Allocation</b> </a>

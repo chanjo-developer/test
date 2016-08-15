@@ -362,14 +362,14 @@ class Stock extends MY_Controller
         $data['module'] = "stock";
         $data['view_file'] = "inventory";
         $data['section'] = "manage stock";
-        $data['subtitle'] = "Stocks Legder";
-        $data['page_title'] = "Stocks Legder";
+        $data['subtitle'] = "Vaccine Ledger";
+        $data['page_title'] = "Vaccine Ledger";
         $data['user_object'] = $this->get_user_object();
         $data['main_title'] = $this->get_title();
         //breadcrumbs
         $this->load->library('make_bread');
         $this->make_bread->add('Manage Stock', '', 0);
-        $this->make_bread->add('Stocks Ledger', '', 0);
+        $this->make_bread->add('Vaccine Ledger', '', 0);
         $data['breadcrumb'] = $this->make_bread->output();
         //$this->output->enable_profiler(TRUE);
         echo Modules::run('template/' . $this->redirect($this->session->userdata['logged_in']['user_group']), $data);
@@ -1141,7 +1141,23 @@ class Stock extends MY_Controller
     }
 
     function monthly_report(){
-        $this->load->view('stock/report');
+        $data['user_object'] = $this->get_user_object();
+        $station = $data['user_object']['user_statiton'];
+        $this->load->model('mdl_stock');
+        $vaccines = $this->mdl_stock->get_vaccines();
+
+        $data['vaccines']= $vaccines;
+
+        foreach ($vaccines as $value) {
+            $quantity['antigen'] = $value->vaccine_name;
+            $quantity['received'] = $this->mdl_stock->get_quantity_data($station, $value->id, 1);              
+            $quantity['issued'] = $this->mdl_stock->get_quantity_data($station, $value->id, 2);              
+            $quantity['balance'] = $this->mdl_stock->get_stock_balance($value->id,  $station);              
+            $antigen[$value->vaccine_name]= $quantity; 
+        }
+        $data['data_object'] = $antigen;
+        $data['main_title'] = $this->get_title();
+        $this->load->view('stock/report', $data);
     }
 
     function generate_report(){

@@ -45,43 +45,79 @@
     <script src="<?php echo base_url() ?>assets/plugins/highcharts/modules/exporting.js"></script>
 </head>
 <body style="background-color:fff !important">
-
+<?php //var_dump($data_object); ?>
 <table class="table table-bordered">
       <thead>
         <tr>
-          <th>#</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Username</th>
+          <th></th>
+          <?php foreach ($vaccines as $value) {
+            if (preg_match('/diluent/', $value->vaccine_name) == false) {
+              echo "<th>".$value->vaccine_name."</th>";
+            }           
+          }?>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td rowspan="2">1</td>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
+            <td>Total Received</td>
+            <?php foreach ($vaccines as $val) {
+                    foreach ($data_object as $key => $value) {
+                      if ($val->vaccine_name == $key){
+                        if ($value['received'][0]->quantity!=null) {
+                         echo "<td>".$value['received'][0]->quantity."</td>"; 
+                        } else {
+                          echo "<td> 0 </td>"; 
+                        }
+
+                      }
+                        
+                     
+                    }
+                  }
+            ?>     
         </tr>
-        <tr>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@TwBootstrap</td>
+         <tr>
+            <td>Total Issued</td>
+            <?php foreach ($vaccines as $val) {
+                    foreach ($data_object as $key => $value) {
+                      if ($val->vaccine_name == $key){
+                        if ($value['issued'][0]->quantity!=null) {
+                          echo "<td>".$value['issued'][0]->quantity."</td>"; 
+                        } else {
+                          echo "<td> 0 </td>"; 
+                        }
+                        
+                        
+                      }
+                        
+                     
+                    }
+                  }
+            ?>     
         </tr>
-        <tr>
-          <td>2</td>
-          <td>Jacob</td>
-          <td>Thornton</td>
-          <td>@fat</td>
+         <tr>
+            <td>Current Balance</td>
+            <?php foreach ($vaccines as $val) {
+                    foreach ($data_object as $key => $value) {
+                      if ($val->vaccine_name == $key){
+                        if ($value['balance'][0]['stock_balance']!=NULL) {
+                          echo "<td>".$value['balance'][0]['stock_balance']."</td>"; 
+                        } else {
+                          echo "<td> 0 </td>"; 
+                        }
+                        
+                      }
+                        
+                     
+                    }
+                  }
+            ?>     
         </tr>
-        <tr>
-          <td>3</td>
-          <td colspan="2">Larry the Bird</td>
-          <td>@twitter</td>
-        </tr>
+           
       </tbody>
     </table>
 
-     <script src="<?php echo base_url() ?>assets/js/common-script.js"></script>
+    <script src="<?php echo base_url() ?>assets/js/common-script.js"></script>
     <script src="<?php echo base_url() ?>assets/js/jquery.slimscroll.min.js"></script>
     <script src="<?php echo base_url() ?>assets/js/graph.js"></script>
     <script src="<?php echo base_url() ?>assets/js/edit-graph.js"></script>

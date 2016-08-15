@@ -55,7 +55,7 @@
         <div class="col-lg-4">
             <div class=" ">
                  <button class="btn btn-success btn-lg custom-button" name="submit" id="submit">Generate</button>
-                 <button class="btn btn-success btn-lg custom-button" name="save" id="save">Save</button>
+                 <button class="btn btn-success btn-lg custom-button" name="save" id="save" >Save</button>
             </div>
         </div>
 
@@ -96,7 +96,12 @@
 
 $(document).ready(function(){
     var table = $('#data').DataTable({
-
+        "dom": 'frtip',
+        "buttons": [
+            {
+                "extend": 'pdfHtml5'
+            }
+        ],
         "stateSave": true,
         "columns": [
             { "data": "name" },
@@ -137,6 +142,31 @@ $(document).ready(function(){
         
 
     });
+
+     $("#save").click(function (e) {
+        _vaccine = $('#vaccine').val();
+        _url = $('#allocation').val();
+        _quantity = $('#quantity').val();
+        if (_vaccine != '') {
+            if(_quantity != '' || quantity < 0){
+                if(_url != ''){
+                    table.button().trigger();
+                }else{
+                    alert('Please select an allocation method');
+                }
+
+                    
+            }else{
+                alert('Please check the value entered');
+            }
+        }else{
+            alert('Please select an antigen');
+        }
+        
+        
+
+    });
+
 
 });
 

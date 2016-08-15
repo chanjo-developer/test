@@ -71,7 +71,6 @@
                     <th align="center">Stock In Hand</th>
                     <th align="center">Minimum Stock</th>
                     <th align="center">Maximum Stock</th>
-                    <th align="center">First Expiry</th>
                     <th align="center">Quantity</th>
                     <th align="center">Action</th>
                     </thead>
@@ -96,14 +95,12 @@
                         <td class="col-xs-2"><?php $data = array('name' => 'max_stock', 'id' => 'max_stock', 'class' => 'form-control max_stock', 'readonly' => '');
                         echo form_input($data); ?> </td>
 
-                        <td class="col-xs-2"><?php $data = array('name' => 'expiry_date', 'id' => 'expiry_date', 'class' => 'form-control expiry_date', 'readonly' => '');
-                        echo form_input($data); ?> </td>
 
-                        <td class="col-xs-2"><?php $data = array('name' => 'quantity', 'id' => 'quantity', 'class' => 'form-control', 'type' => 'number', 'required' => '', 'min' => '0');
+                        <td class="col-xs-2"><?php $data = array('name' => 'quantity', 'id' => 'quantity', 'class' => 'form-control quantity', 'type' => 'number', 'required' => '', 'min' => '0');
                         echo form_input($data); ?> </td>
                         <td class="small">
                                 <a href="#" class="add btn"><span class="label label-success"><i
-                                            class="fa fa-plus-square"></i> <b>ADD</b></span></a><br>
+                                            class="fa fa-plus-square"></i> <b>ADD</b></span></a>
                                 <a href="#" class="remove btn"><span class="label label-danger"><i
                                             class="fa  fa-minus-square"></i> <b>REMOVE</b></span></a>
                             </td>
@@ -127,7 +124,7 @@
                             Are you sure you want to submit the entered details?
                         <div class="modal-footer">
                                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancel</button>
-                               <button type="submit" name="stock_received" id="stock_received" class="btn btn-sm btn-danger"><i class="fa fa-paper-plane"></i>Submit<img id="loader" src="<?php echo base_url() ?>assets/images/loader.gif" alt="loading image" hidden></button>
+                               <button type="submit" name="stock_received" id="stock_received" class="btn btn-sm btn-danger"><i class="fa fa-paper-plane"></i>&nbsp;Submit<img id="loader" src="<?php echo base_url() ?>assets/images/loader.gif" alt="loading image" hidden></button>
                             </div>
                         </div>
                     </div>
@@ -189,12 +186,23 @@
             row.closest("tr").find("td .current_stock").val("");
             row.closest("tr").find("td .min_stock").val("");
             row.closest("tr").find("td .max_stock").val("");
-            row.closest("tr").find("td .expiry_date").val("");
+            row.closest("tr").find("td .quantity").val("");
+
             $.each(data,function(key,value){
-                row.closest("tr").find("td .current_stock").val(value.current_stock);
+                var current = value.current_stock;
+                if (current == null){
+                    row.closest("tr").find("td .current_stock").val(0);
+                    row.closest("tr").find("td .quantity").val(value.max_stock);
+                }else{
+                    row.closest("tr").find("td .current_stock").val(value.current_stock);
+                    row.closest("tr").find("td .quantity").val(value.max_stock-current);
+                }
+
+                
                 row.closest("tr").find("td .min_stock").val(value.min_stock);
                 row.closest("tr").find("td .max_stock").val(value.max_stock);
-                row.closest("tr").find("td .expiry_date").val(value.expiry_date);
+                
+
             });
            
 
@@ -229,7 +237,6 @@
         var current = retrieveFormValues_Array('current_stock');
         var max = retrieveFormValues_Array('max_stock');
         var min = retrieveFormValues_Array('min_stock');
-        var expiry = retrieveFormValues_Array('expiry_date');
 
         var dat = new Array();
         var get_requestor = requestor;
@@ -243,7 +250,7 @@
             var get_current = current[i];
             var get_max = max[i];
             var get_min = min[i];
-            var get_expiry = expiry[i];
+    
 
 
             data = {
@@ -251,8 +258,7 @@
                 "quantity" : get_quantity,
                 "current" : get_current,
                 "max_stock" : get_max,
-                "min_stock" : get_min,
-                "expiry" : get_expiry
+                "min_stock" : get_min   
             };
             dat.push(data);
         }
