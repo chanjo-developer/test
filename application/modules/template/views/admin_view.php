@@ -17,6 +17,8 @@
     <link href="<?php echo base_url() ?>assets/plugins/advanced-datatable/css/demo_page.css" rel="stylesheet" />
     <link href="<?php echo base_url() ?>assets/plugins/advanced-datatable/css/demo_table.css" rel="stylesheet" />
     <link href="<?php echo base_url() ?>assets/plugins/formvalidation.io/dist/css/formValidation.min.css" rel="stylesheet" />
+    <link href="<?php echo base_url() ?>assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.css" rel="stylesheet" />
+    <link href="<?php echo base_url() ?>assets/plugins/dropzone/dropzone.css" rel="stylesheet" />
 
     <link href="<?php echo base_url() ?>assets/css/jquery-ui.css" rel="stylesheet" />
     <link href="<?php echo base_url() ?>assets/plugins/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" />
@@ -385,6 +387,8 @@
     <script src="<?php echo base_url() ?>assets/plugins/formvalidation.io/dist/js/framework/bootstrap.min.js"></script>
     
     <script src="<?php echo base_url() ?>assets/plugins/data-tables/DT_bootstrap.js"></script>
+    <script src="<?php echo base_url() ?>assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
+    <script src="<?php echo base_url() ?>assets/plugins/dropzone/dropzone.min.js"></script>
 
 
 
