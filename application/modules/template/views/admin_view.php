@@ -221,7 +221,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('uploads/notice'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Policy & Notices</b>
+                                    <a href="<?php echo site_url('uploads/notice'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Policy &amp; Notices</b>
                                     </a>
                                 </li>
                             </ul>
@@ -232,31 +232,31 @@
                             <ul>
                                 <?php if ($user_object[ 'user_level']=='1' ) { ?>
                                 <li>
-                                    <a href="<?php echo site_url('group/'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Groups</b> </a>
+                                    <a href="<?php echo site_url('group/'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>My Groups</b> </a>
                                 </li>
                                 <?php } else { } ?>
                                 <li>
-                                    <a href="<?php echo site_url('users/list_users'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i><b>Add Users</b> </a>
+                                    <a href="<?php echo site_url('users/list_users'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i><b>My Users</b> </a>
                                 </li>
                                 <?php if ($user_object[ 'user_level']=='1' ) { ?>
                                 <li>
-                                    <a href="<?php echo site_url('vaccines'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Vaccines</b> </a>
+                                    <a href="<?php echo site_url('vaccines'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>My Vaccines</b> </a>
                                 </li>
                                 <?php } else { } ?>
                                 <li>
-                                    <a href="<?php echo site_url('region/'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Regions</b> </a>
+                                    <a href="<?php echo site_url('region/'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>My Regions</b> </a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('county/'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add County</b> </a>
+                                    <a href="<?php echo site_url('county/'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>My Counties</b> </a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('subcounty/'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Sub-County</b> </a>
+                                    <a href="<?php echo site_url('subcounty/'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>My Sub-counties</b> </a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('store'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Store</b> </a>
+                                    <a href="<?php echo site_url('store'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>My Store</b> </a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('facility'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Add Facilities</b> </a>
+                                    <a href="<?php echo site_url('facility'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>My Facilities</b> </a>
                                 </li>
 
                             </ul>
