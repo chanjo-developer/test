@@ -46,13 +46,7 @@
             </div>
             <div class="col-lg-4">
                 <div class="panel-body">
-                    <b>Months to order</b><br>
-                    <select id="months" class="form-control" required>
-                    <option selected value="" required>--Select Duration--</option>
-                    <?php for ($i = 1; $i <= 12; $i++) {
-                        echo "<option value='" . $i . "'>" . $i . "</option>";
-                    } ?>
-                </select>
+                    
                 </div>
             </div>
         </div>
@@ -72,39 +66,34 @@
                     <th align="center">Minimum Stock</th>
                     <th align="center">Maximum Stock</th>
                     <th align="center">Quantity</th>
-                    <th align="center">Action</th>
+                    
                     </thead>
                     <tbody>
 
-                    <tr align="center" request_row="1">
+                   
+                        <?php foreach ($quantities as $key => $value) {?>
+                        <tr align="center">  
+                       
+                        <td class="col-xs-2"><?php echo $key; ?></td>
+                       
+                        <td hidden><?php $data = array('name' => 'vaccine', 'id' => 'vaccine', 'class' => 'form-control vaccine', 'readonly' => '', 'value' => $value['vaccine_id']);
+                        echo form_input($data); ?> </td>
 
-                        <td class="col-xs-2"><select name="vaccine" class="vaccine form-control" id="vaccine" required>
-                                <option value="">Select Vaccine</option>
-                                <?php foreach ($vaccines as $vaccine) {
-                                    echo "<option value='" . $vaccine['id'] . "'>" . $vaccine['vaccine_name'] . "</option>";
-                                } ?>
-                            </select>
-                        </td>
-
-                         <td class="col-xs-2"><?php $data = array('name' => 'current_stock', 'id' => 'current_stock', 'class' => 'form-control current_stock', 'readonly' => '');
+                        <td class="col-xs-2"><?php $data = array('name' => 'current_stock', 'id' => 'current_stock', 'class' => 'form-control current_stock', 'readonly' => '', 'value' => $value['current_stock']);
                         echo form_input($data); ?> </td>
                         
-                        <td class="col-xs-2"><?php $data = array('name' => 'min_stock', 'id' => 'min_stock', 'class' => 'form-control min_stock', 'readonly' => '');
+                        <td class="col-xs-2"><?php $data = array('name' => 'min_stock', 'id' => 'min_stock', 'class' => 'form-control min_stock', 'readonly' => '', 'value' => $value['min_stock']);
                         echo form_input($data); ?> </td>
 
-                        <td class="col-xs-2"><?php $data = array('name' => 'max_stock', 'id' => 'max_stock', 'class' => 'form-control max_stock', 'readonly' => '');
+                        <td class="col-xs-2"><?php $data = array('name' => 'max_stock', 'id' => 'max_stock', 'class' => 'form-control max_stock', 'readonly' => '', 'value' => $value['max_stock']);
                         echo form_input($data); ?> </td>
 
 
-                        <td class="col-xs-2"><?php $data = array('name' => 'quantity', 'id' => 'quantity', 'class' => 'form-control quantity', 'type' => 'number', 'required' => '', 'min' => '0');
+                        <td class="col-xs-2"><?php $data = array('name' => 'quantity', 'id' => 'quantity', 'class' => 'form-control quantity', 'type' => 'number', 'required' => '', 'min' => '0', 'value' => $value['order']);
                         echo form_input($data); ?> </td>
-                        <td class="small">
-                                <a href="#" class="add btn"><span class="label label-success"><i
-                                            class="fa fa-plus-square"></i> <b>ADD</b></span></a>
-                                <a href="#" class="remove btn"><span class="label label-danger"><i
-                                            class="fa  fa-minus-square"></i> <b>REMOVE</b></span></a>
-                            </td>
-                    </tr>
+                        </tr>
+                    <?php } ?> 
+                    
 
                     </tbody>
                 </table>
@@ -139,83 +128,8 @@
 </div>
 <script type="text/javascript">
 
-    $('#request_table').delegate('.add', 'click', function () {
-
-        var thisRow = $('#request_table tr:last');
-        var cloned_object = $(thisRow).clone();
-
-        var request_row = cloned_object.attr("request_row");
-        var next_request_row = parseInt(request_row) + 1;
-        cloned_object.attr("request_row", next_request_row);
-
-        var vaccine_id = "vaccine" + next_request_row;
-        var vaccine = cloned_object.find(".vaccine");
-        vaccine.attr('id', vaccine_id);
-
-        
-        cloned_object.insertAfter(thisRow).find('input').val('');
-        
-    });
-
-    $('#request_table').delegate('.remove', 'click', function () {
-        if ( $('#request_table tbody tr').length == 1) return;
-            $(this).parents("tr").fadeOut('slow', function () {
-                $(this).remove();
-            });
-    });
-
-    $(document).on( 'change','.vaccine', function () {
-        var row=$(this);
-        var selected_vaccine=$(this).val();
-        load_details(selected_vaccine, row);
-    });
-
-    function load_details(selected_vaccine, row){
-
-        var _url="<?php echo base_url();?>order/populate_request";
-
-        var request=$.ajax({
-            url: _url,
-            type: 'post',
-            data: {"selected_vaccine":selected_vaccine},
-
-        });
-
-        request.done(function(data){
-            data=JSON.parse(data);
-            row.closest("tr").find("td .current_stock").val("");
-            row.closest("tr").find("td .min_stock").val("");
-            row.closest("tr").find("td .max_stock").val("");
-            row.closest("tr").find("td .quantity").val("");
-
-            $.each(data,function(key,value){
-                var current = value.current_stock;
-                if (current == null){
-                    row.closest("tr").find("td .current_stock").val(0);
-                    row.closest("tr").find("td .quantity").val(value.max_stock);
-                }else{
-                    row.closest("tr").find("td .current_stock").val(value.current_stock);
-                    row.closest("tr").find("td .quantity").val(value.max_stock-current);
-                }
-
-                
-                row.closest("tr").find("td .min_stock").val(value.min_stock);
-                row.closest("tr").find("td .max_stock").val(value.max_stock);
-                
-
-            });
-           
-
-        });
-        request.fail(function(jqXHR, textStatus) {
-
-        });
-    }
-
 
     $("#request_form").submit(function (e) {
-
-
         $('.fa').removeClass("fa-paper-plane");
         $(this).find("button[type='submit']").prop('disabled',true);
         $(this).find("button[type='submit']").css('background','#fff');
@@ -227,7 +141,8 @@
             vaccine_count++;
         });
 
-
+        
+        // var formURL = "";
         var formURL = "<?php echo base_url();?>order/save_request";
 
         var to_from = retrieveFormValues('to_from');
@@ -263,6 +178,7 @@
             dat.push(data);
         }
         batch = JSON.stringify(dat);
+       
         $.ajax(
             {
                 url: formURL,
@@ -281,6 +197,7 @@
                 },
                 success: function (data, textStatus, jqXHR) {
                     //data: return data from server
+                    window.open('<?php echo base_url() . 'order/download_order_sheet'?>');
                     window.location.replace('<?php echo base_url() . 'order/list_orders'?>');
 
 

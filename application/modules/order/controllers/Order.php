@@ -37,7 +37,13 @@ class Order extends MY_Controller
         Modules::run('secure_tings/is_logged_in');
         $this->load->model('vaccines/mdl_vaccines');
         $this->load->model('order/mdl_order');
-        $data['vaccines'] = $this->mdl_vaccines->getVaccine();
+        $vaccines = $this->mdl_vaccines->getVaccine();
+        $quantities = array();
+        foreach ($vaccines as $vaccine) {
+          $quantities[$vaccine['vaccine_name']] = $this->populate_request($vaccine['id']);
+        }
+    
+        $data['quantities'] = $quantities;
         $info['user_object'] = $this->get_user_object();
         $station_level = $info['user_object']['user_level'];
         $station_id = $info['user_object']['user_statiton'];
@@ -187,20 +193,34 @@ class Order extends MY_Controller
         redirect('order/list_orders');
     }
 
-    function populate_request(){
-    	$vaccine_id = NULL;
-    	if(is_null($vaccine_id)){
-    		$vaccine_id = $this->input->post('selected_vaccine');
-    		if(is_numeric($vaccine_id)){
+    function populate_request($vaccine_id = NULL){
+    	
+    	if(!is_null($vaccine_id)){
+    	   if(is_numeric($vaccine_id)){
 	    		$this->load->model('order/mdl_order');
 		    	$info['user_object'] = $this->get_user_object();
 		    	$station = $info['user_object']['user_statiton'];
 		        $level = $info['user_object']['user_level'];
 		    	$query = $this->mdl_order->calculate_request($station,$level,$vaccine_id);
-		    	echo json_encode($query);
+
+                $calculations = array();
+                foreach ($query as $value) {
+                    
+                    $calculations['vaccine_id'] = $vaccine_id;
+                    $calculations['current_stock'] = $value['current_stock'];
+                    $calculations['max_stock'] = (int)$value['max_stock'];
+                    $calculations['min_stock'] = (int)$value['min_stock'];
+                    $calculations['expiry_date'] = $value['expiry_date'];
+                    if (is_null($value['current_stock'])){
+                        $calculations['order'] = (int)$value['max_stock'];
+                    }elseif ($value['current_stock']>0) {
+                         $calculations['order'] = (int)($value['max_stock']-$value['current_stock']);
+                    } 
+                }
+                return ($calculations);
 		    }
     	}else{
-    		echo json_encode(0);
+    		return (0);
     	}	
     }
 
@@ -266,8 +286,35 @@ class Order extends MY_Controller
            
         }
         $this->session->set_flashdata('msg', '<div id="alert-message" class="alert alert-success text-center">Request submitted Successfully</div>');
-
+        
     }
+
+    function download_order_sheet(){
+        Modules::run('secure_tings/is_logged_in');
+
+        $this->load->model('vaccines/mdl_vaccines');
+        $this->load->model('order/mdl_order');
+        $vaccines = $this->mdl_vaccines->getVaccine();
+        $quantities = array();
+        foreach ($vaccines as $vaccine) {
+            $quantities[$vaccine['vaccine_name']] = $this->populate_request($vaccine['id']);
+            $quantities[$vaccine['vaccine_id']] = $this->populate_request($vaccine['id']);
+        }
+
+        $data['quantities'] = $quantities;
+        $station=$this->get_user_object()['user_statiton'];
+        $user_id = $this->session->userdata['logged_in']['user_id'];
+
+
+        $this->load->helper(array('dompdf', 'file'));
+        $data['title']='Vaccine Order Sheet for '.$station;
+        $data['user_object'] = $this->get_user_object();
+
+        $html = $this->load->view('order/request_sheet',$data,true);
+
+        $doc_name='Vaccine_Order_Sheet_'.date('l F Y A');
+        pdf_create($html, $doc_name);
+     }
 
 
     function get_with_limit($limit, $offset, $order_by)
