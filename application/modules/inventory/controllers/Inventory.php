@@ -93,20 +93,22 @@ class Inventory extends MY_Controller
 								
 						$data_array[] = array(
 										"subcounty_name"	=>	$location['subcounty'], 
+										"facility_id"	=>	$arr_data[$row]['0'], 
 										"facility_name"	=>	$arr_data[$row]['1'], 
-										"catchment_pop"	=>	$arr_data[$row]['2'], 
-										"live_birth_pop"	=>	$arr_data[$row]['3'], 
-										"immunizing_status"	=>	$arr_data[$row]['4'], 
-										"working_coldboxes"	=>	$arr_data[$row]['5'],
-										"working_vaccine_carriers"	=>	$arr_data[$row]['6'],
-										"ice_packs"	=>	$arr_data[$row]['7'],
-										"elec_availability"	=>	$arr_data[$row]['8'],
-										"make"	=>	$arr_data[$row]['9'],
-										"model"	=>	$arr_data[$row]['10'],
-										"age"	=>	$arr_data[$row]['11'],
-										"status"	=>	$arr_data[$row]['12'],
-										"ft2_availability"	=>	$arr_data[$row]['13'],
-										"remarks"	=>	$arr_data[$row]['14'],
+										"details" 		=> array(
+											"catchment_pop"	=>	$arr_data[$row]['2'], 
+											"live_birth_pop"	=>	$arr_data[$row]['3'], 
+											"immunizing_status"	=>	$arr_data[$row]['4'], 
+											"working_coldboxes"	=>	$arr_data[$row]['5'],
+											"working_vaccine_carriers"	=>	$arr_data[$row]['6'],
+											"ice_packs"	=>	$arr_data[$row]['7'],
+											"elec_availability"	=>	$arr_data[$row]['8'],
+											"make"	=>	$arr_data[$row]['9'],
+											"model"	=>	$arr_data[$row]['10'],
+											"age"	=>	$arr_data[$row]['11'],
+											"status"	=>	$arr_data[$row]['12'],
+											"ft2_availability"	=>	$arr_data[$row]['13'],
+											),
 										"similarities"	=>	$this->retrieve_facility($location['subcounty']),
 											);
 
@@ -119,10 +121,11 @@ class Inventory extends MY_Controller
 				$data['location'] = $location;
 				$data['header'] = $header;
 				$data['values'] = $data_array;
+				$json_data = array("data" => $data_array);
 				
 			
 			    $fp = fopen(APPPATH.'../docs/json/facilities.json', 'w+');
-			    fwrite($fp, json_encode($data['values']));
+			    fwrite($fp, json_encode($json_data));
 			    redirect('inventory/list_facility');
 				
 				// $matching_record = array();
@@ -196,6 +199,52 @@ class Inventory extends MY_Controller
     	$query = $this->mdl_inventory->get_facility($subcounty);
     	return ($query);
     	// echo json_encode($query);
+    }
+
+    function get_similar_model()
+    {
+    	$this->load->model('mdl_inventory');
+    	$query = $this->mdl_inventory->get_similar_model('RCW 42 EG');
+    	// return ($query);
+    	echo json_encode($query);
+    }
+
+
+    function save(){
+    	$info['user_object'] = $this->get_user_object();
+
+    	$user_id = $info['user_object']['user_id'];
+    	$station = $info['user_object']['user_statiton'];
+       	$level= $info['user_object']['user_level'];
+
+    	$data = stripcslashes($_POST['data']);
+        $data = json_decode($data, TRUE);
+
+        $data_array = array();
+        foreach ($data as $item ) {
+            
+            $data_array['facility_id'] = $item['matching_id'];
+            $data_array['coldboxes'] = $item['details']['working_coldboxes'];
+            $data_array['vaccine_carriers'] = $item['details']['working_vaccine_carriers'];
+            $data_array['ice_packs'] = $item['details']['ice_packs'];
+            $data_array['electricity'] = $item['details']['elec_availability'];
+            $data_array['functional_status'] = $item['details']['status'];
+            $data_array['age'] = filter_var($item['details']['age'], FILTER_SANITIZE_NUMBER_INT);
+           	// $data_array['make'] = $item['details']['make'];
+           	// $data_array['model'] = $item['details']['model'];
+           	$data_array['ft2_availability'] = $item['details']['ft2_availability'];
+           	$data_array['user_id'] = $user_id;
+           	$data_array['station'] = $station;
+           	$data_array['level'] = $level;
+           	$data_array['date_added'] = $date_recorded = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')));;
+            $this->db->insert('tbl_inventory', $data_array);
+           
+            }
+            
+            
+        $this->session->set_flashdata('msg', '<div id="alert-message" class="alert alert-success text-center">Cold Chain Inventory updated successfully!</div>');
+        
+        
     }
 
 }

@@ -30,7 +30,13 @@ class Mdl_inventory extends CI_Model {
         return $query->result();
     }
 
-
+    function get_similar_model($model) {
+        $this->db->select('id,Model');
+        $this->db->where('Model LIKE', '%'.$model.'%');
+        $this->db->from('tbl_fridges');
+        $query = $this->db->get();
+        return $query->result();
+    }
 
 }    
 

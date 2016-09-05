@@ -171,7 +171,7 @@ class MY_Controller extends MX_Controller
             return $data;
 
         } else {
-            header("location: users");
+            header("location: ../users");
         }
     }
 
