@@ -52,7 +52,7 @@ class Users extends MY_Controller
                 $email = $this->input->post('email');
                 $query = $this->mdl_users->fetch_user_email($email);
                 if($query == true){
-                  
+                    $this->send_reset_link($email);
                     $this->session->set_flashdata('msg', '<div id="alert-message" class="alert alert-danger text-center">Password Reset Email sent successfully</div>');
                     redirect('users');
                 }else{
@@ -68,46 +68,36 @@ class Users extends MY_Controller
         }
     }
 
-    public function email()
+    function reset_password()
     {
-        $this->load->library('email');
-
-        $subject = 'This is a test';
-        $message = '<p>This message has been sent for testing purposes.</p>';
-
-        // Get full html:
-        $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-        <html xmlns="http://www.w3.org/1999/xhtml">
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=' . strtolower(config_item('charset')) . '" />
-            <title>' . html_escape($subject) . '</title>
-            <style type="text/css">
-                body {
-                    font-family: Arial, Verdana, Helvetica, sans-serif;
-                    font-size: 16px;
-                }
-            </style>
-        </head>
-        <body>
-        ' . $message . '
-        </body>
-        </html>';
-        // Also, for getting full html you may use the following internal method:
-        //$body = $this->email->full_html($subject, $message);
-
-        $result = $this->email
-                ->from('amongash08@gmail.com')
-                ->to('amos.kamari@strathmore.edu')
-                ->subject($subject)
-                ->message($body)
-                ->send();
-
-        var_dump($result);
-        echo '<br />';
-        echo $this->email->print_debugger();
-
-        exit;
+        $this->load->library('user_agent'); 
+        $this->load->library('form_validation');
+        $data['module']="users";
+        $data['view_file']="reset_password";
+        $data['main_title'] = $this->get_title();
+        
+        if(!isset($this->session->userdata['logged_in'])){
+          echo Modules::run('template/home', $data);
+        }else{
+            $logout =  base_url('users/logout');
+            show_error("This page can only be accessed after <a href=".$logout."> logging out<a/> ");
+        }
     }
+
+    private function send_reset_link($email)
+    {
+        date_default_timezone_set('GMT');
+        $this->load->helper('string');
+        $password= random_string('alnum', 16);
+        $this->db->where('email', $email);
+        $this->db->update('tbl_users',array('password'=> Modules::run('secure_tings/hash_it', $password)));
+        $this->load->library('email');
+        $this->email->from('help@epikenya.org', 'System Administrator');
+        $this->email->to($email);     
+        $this->email->subject('Password reset');
+        $this->email->message('You have requested the new password, Here is you new password:'. $password); 
+        $this->email->send();
+    } 
 
     function list_users()
     {

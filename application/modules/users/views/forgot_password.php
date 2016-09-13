@@ -9,7 +9,7 @@
                     <?php
                     echo form_label('Enter Email Address','email');
                     echo form_error('email');
-                    echo form_input(['name' => 'email', 'id' => 'email', 'class' => 'form-control', 'required' => '']);
+                    echo form_input(['name' => 'email', 'id' => 'email', 'class' => 'form-control', 'required' => '', 'placeholder' => 'Email Address']);
                     ?>
                     </div>
                     <br>

@@ -2,6 +2,10 @@
 
 class Template extends MX_Controller {
 
+    function welcome($data) {
+
+        $this->load->view('welcome_view', $data);
+    }
 
     function home($data) {
 

@@ -75,7 +75,7 @@ class Mdl_users extends CI_Model {
                 $query = $this->db->get();
 
                 if ($query->num_rows() == 1) {
-                    return true;
+                     return $query->result();
                 } else {
                     return false;
                 }
@@ -91,7 +91,7 @@ class Mdl_users extends CI_Model {
                 $query = $this->db->get();
 
                 if ($query->num_rows() == 1) {
-                    return $query->result();
+                    return true;
                 } else {
                     return false;
                 }
