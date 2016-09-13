@@ -75,6 +75,22 @@ class Mdl_users extends CI_Model {
                 $query = $this->db->get();
 
                 if ($query->num_rows() == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function fetch_user_email($email) {
+                $table = $this->get_table();
+                $condition = "email =" . "'" . $email . "'";
+                $this->db->select('*');
+                $this->db->from($table);
+                $this->db->where($condition);
+                $this->db->limit(1);
+                $query = $this->db->get();
+
+                if ($query->num_rows() == 1) {
                     return $query->result();
                 } else {
                     return false;

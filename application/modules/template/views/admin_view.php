@@ -150,7 +150,7 @@
                                     class="fa fa-plus"></i></span> </a>
                             <ul>
                                 <li>
-                                    <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Inventory</b> </a>
+                                    <a href="<?php echo site_url('inventory/list_inventory'); ?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Inventory</b> </a>
                                 </li>
                                 <li>
                                     <a href="#"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Spare Parts

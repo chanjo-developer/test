@@ -32,6 +32,83 @@ class Users extends MY_Controller
 
     }
 
+    function forgot_password()
+    {
+        $this->load->library('user_agent'); 
+        $this->load->library('form_validation');
+        $data['module']="users";
+        $data['view_file']="forgot_password";
+        $data['main_title'] = $this->get_title();
+        
+        if(!isset($this->session->userdata['logged_in'])){
+          echo Modules::run('template/home', $data);
+        }
+
+
+        if($this->input->post('email')){
+            $this->form_validation->set_rules('email', 'required|valid_email');
+            if ($this->form_validation->run() == false){
+                $this->load->model('mdl_users');
+                $email = $this->input->post('email');
+                $query = $this->mdl_users->fetch_user_email($email);
+                if($query == true){
+                  
+                    $this->session->set_flashdata('msg', '<div id="alert-message" class="alert alert-danger text-center">Password Reset Email sent successfully</div>');
+                    redirect('users');
+                }else{
+              
+                    $this->session->set_flashdata('msg', '<div id="alert-message" class="alert alert-danger text-center">Email does not exist</div>');
+                    redirect('users/forgot_password');
+                }
+               
+
+
+            }
+            
+        }
+    }
+
+    public function email()
+    {
+        $this->load->library('email');
+
+        $subject = 'This is a test';
+        $message = '<p>This message has been sent for testing purposes.</p>';
+
+        // Get full html:
+        $body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=' . strtolower(config_item('charset')) . '" />
+            <title>' . html_escape($subject) . '</title>
+            <style type="text/css">
+                body {
+                    font-family: Arial, Verdana, Helvetica, sans-serif;
+                    font-size: 16px;
+                }
+            </style>
+        </head>
+        <body>
+        ' . $message . '
+        </body>
+        </html>';
+        // Also, for getting full html you may use the following internal method:
+        //$body = $this->email->full_html($subject, $message);
+
+        $result = $this->email
+                ->from('amongash08@gmail.com')
+                ->to('amos.kamari@strathmore.edu')
+                ->subject($subject)
+                ->message($body)
+                ->send();
+
+        var_dump($result);
+        echo '<br />';
+        echo $this->email->print_debugger();
+
+        exit;
+    }
+
     function list_users()
     {
 

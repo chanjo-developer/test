@@ -15,7 +15,7 @@ class Inventory extends MY_Controller
            $data['subtitle'] = "Library";
            $data['page_title'] = "Files";
            $data['module'] = "inventory";
-           $data['view_file'] = "match_view";
+           $data['view_file'] = "index_view";
            $data['user_object'] = $this->get_user_object();
            $data['main_title'] = $this->get_title();
             //breadcrumbs
@@ -126,13 +126,7 @@ class Inventory extends MY_Controller
 			
 			    $fp = fopen(APPPATH.'../docs/json/facilities.json', 'w+');
 			    fwrite($fp, json_encode($json_data));
-			    redirect('inventory/list_facility');
-				
-				// $matching_record = array();
-				// foreach ($arr_data as $key => $value) {
-				// 	$matching_record[] = $this->retrieve_facility($value[1],$location['subcounty']);
-				// }
-				//$data['matching_record'] = $this->retrieve_facility($location['subcounty']);
+			    redirect('inventory/list_inventory');
 			
 			}else{
 				show_error('Error. Please make sure the Excel document follows the proper format given!');
@@ -143,17 +137,18 @@ class Inventory extends MY_Controller
 		}
     }
 
-   	function list_facility(){
+   	function list_inventory(){
 		$data['section'] = "NVIP Chanjo";
 		$data['subtitle'] = "Inventory";
 		$data['page_title'] = "Views";
 		$data['module'] = "inventory";
-		$data['view_file'] = "list_view";
+		$data['view_file'] = "match_view";
 		$data['user_object'] = $this->get_user_object();
 		$data['main_title'] = $this->get_title();
 		//breadcrumbs
 		$this->load->library('make_bread');
-		$this->make_bread->add('inventory', '/', 1);
+		$this->make_bread->add('Inventory', 'inventory', 1);
+		$this->make_bread->add('List Inventory', 'inventory/list_inventory', 1);
 		$data['breadcrumb'] = $this->make_bread->output();
 	
 		echo Modules::run('template/'.$this->redirect($this->session->userdata['logged_in']['user_group']), $data);
@@ -225,6 +220,8 @@ class Inventory extends MY_Controller
             
             $data_array['facility_id'] = $item['matching_id'];
             $data_array['coldboxes'] = $item['details']['working_coldboxes'];
+            $data_array['catchment_pop'] = $item['details']['catchment_pop'];
+            $data_array['live_birth_pop'] = $item['details']['live_birth_pop'];
             $data_array['vaccine_carriers'] = $item['details']['working_vaccine_carriers'];
             $data_array['ice_packs'] = $item['details']['ice_packs'];
             $data_array['electricity'] = $item['details']['elec_availability'];
@@ -247,4 +244,10 @@ class Inventory extends MY_Controller
         
     }
 
+    function retrieve_inventory()
+    {
+    	$this->load->model('mdl_inventory');
+    	$query['data'] = $this->mdl_inventory->get_inventory();
+    	echo json_encode($query);
+    }
 }

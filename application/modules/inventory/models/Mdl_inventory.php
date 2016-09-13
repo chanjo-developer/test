@@ -38,6 +38,18 @@ class Mdl_inventory extends CI_Model {
         return $query->result();
     }
 
+    function get_inventory() {
+        $this->db->select('*');
+        $this->db->from('tbl_inventory ti');
+        $this->db->join('tbl_facilities', 'tbl_facilities.id = ti.facility_id');
+        $this->db->join('tbl_fridges', ' tbl_fridges.id= ti.fridge_id');
+        // $this->db->join('tbl_subcounties', 'tbl_subcounties.id = mf.subcounty_id');
+        // $this->db->join('tbl_counties', 'tbl_counties.id = mf.county_id');
+        // $this->db->join('tbl_regions', 'tbl_counties.region_id = tbl_regions.id');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }    
 
 
