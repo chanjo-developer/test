@@ -34,8 +34,8 @@
 }
 
 .hero .get-it h1, .hero .get-it p{
-  color:#fff;
-  text-shadow:2px 2px 3px rgba(0,0,0,0.3);
+  color:#bfbfbf;
+  text-shadow:1px 2px 3px rgba(0, 0, 0, 0.18)
   margin-bottom:40px;
 }
 
@@ -67,7 +67,7 @@ div.iphone-mockup{
   border:1px solid #444;
   background-color:#aaa;
   overflow:hidden;
-  background:url(screen-content-iphone-6.jpg);
+  background:url(<?php echo base_url('assets/images/CaptureLogin-1.png')?>);
   background-size:cover;
   background-position:center;
 }
@@ -197,14 +197,14 @@ section.testimonials{
                 </div>
                 <div class="col-md-6">
                     <div class="row icon-features">
-                        <div class="col-xs-4 icon-feature"><i class="glyphicon glyphicon-cloud"></i>
-                            <p>Cold Chain Inventory 2016 </p>
+                        <div class="col-xs-4 icon-feature">
+                            <p style="padding-top:48px">Cold Chain Inventory 2016 </p>
                         </div>
-                        <div class="col-xs-4 icon-feature"><i class="glyphicon glyphicon-piggy-bank"></i>
-                            <p>Roll Out of Fridge Tags in 95% of Health Facilities</p>
+                        <div class="col-xs-4 icon-feature">
+                            <p style="padding-top:48px">Roll Out of Fridge Tags in 95% of Health Facilities</p>
                         </div>
-                        <div class="col-xs-4 icon-feature"><i class="glyphicon glyphicon-fire"></i>
-                            <p>Successful switch to bOPV and introduction of IPC</p>
+                        <div class="col-xs-4 icon-feature">
+                            <p style="padding-top:48px">Successful switch to bOPV and introduction of IPC</p>
                         </div>
                     </div>
                 </div>

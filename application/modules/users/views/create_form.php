@@ -37,7 +37,7 @@ $label = array('class' => 'col-xs-3 control-label');
             <div class="porlets-content">
                 <div class="row">
                     <div class="col-md-10 col-md-offset-2">
-                    <?php echo form_open('users/register', $form); ?>
+                    <?php echo form_open('users/create', $form); ?>
 <style type="text/css">
 .centered-pills { text-align:center; }
 .centered-pills ul.nav-pills { display:inline-block; }

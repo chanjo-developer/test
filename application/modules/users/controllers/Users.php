@@ -124,6 +124,40 @@ class Users extends MY_Controller
 
     }
 
+    function register()
+    {
+        if (!isset($update_id)) {
+            $update_id = $this->input->post('update_id');
+        }
+
+        if (is_numeric($update_id)) {
+            $data = $this->get_data_from_db($update_id);
+            $data['update_id'] = $update_id;
+
+        } else {
+            $data = $this->get_create_data_from_post();
+        }
+        
+        $data['module']="users";
+        $data['view_file']="register_form";
+        $data['main_title'] = $this->get_title();
+        $data['magroups'] = $this->mdl_users->get_user_groups();
+        $data['malevels'] = $this->mdl_users->get_user_levels();
+        $data['macounties'] = $this->mdl_users->get_counties();
+        $data['masubcounty'] = $this->mdl_users->get_subcounty();
+        $data['mafacilities'] = $this->mdl_users->get_facilities();
+        $data['maregion'] = $this->mdl_users->getRegion();
+        
+        
+        if(!isset($this->session->userdata['logged_in'])){
+          echo Modules::run('template/home', $data);
+        }else{
+            redirect(base_url());
+        }
+       
+    }
+
+
     function profile()
     {
 
@@ -204,7 +238,7 @@ class Users extends MY_Controller
             $data['update_id'] = $update_id;
 
         } else {
-            $data = $this->get_register_data_from_post();
+            $data = $this->get_create_data_from_post();
         }
         $data['magroups'] = $this->mdl_users->get_user_groups();
         $data['malevels'] = $this->mdl_users->get_user_levels();
@@ -274,6 +308,18 @@ class Users extends MY_Controller
         return $data;
     }
 
+    function get_create_data_from_post()
+    {
+        $data['f_name'] = $this->input->post('f_name', TRUE);
+        $data['l_name'] = $this->input->post('l_name', TRUE);
+        $data['username'] = $this->input->post('username', TRUE);
+        $data['phone'] = $this->input->post('phone', TRUE);
+        $data['email'] = $this->input->post('email', TRUE);
+        $data['user_level'] = $this->input->post('user_level', TRUE);
+        $data['user_group'] = $this->input->post('user_group', TRUE);
+        return $data;
+    }
+
     function get_register_data_from_post()
     {
         $data['f_name'] = $this->input->post('f_name', TRUE);
@@ -287,7 +333,7 @@ class Users extends MY_Controller
     }
 
 
-    function register()
+    function create()
     {
         Modules::run('secure_tings/is_logged_in');
         $this->load->library('form_validation');
@@ -307,7 +353,7 @@ class Users extends MY_Controller
 
         } else {
 
-        	$data = $this->get_register_data_from_post();
+        	$data = $this->get_create_data_from_post();
 
             $password = $this->input->post('password', TRUE);
             $data_base['national'] = $this->input->post('national', TRUE);
